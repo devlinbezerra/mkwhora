@@ -1,0 +1,1 @@
+//Verificando e atribuindo injeção própria

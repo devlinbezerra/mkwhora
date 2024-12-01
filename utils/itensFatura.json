@@ -1,0 +1,112 @@
+[
+    {
+        "id_itens_fatura": 1,
+        "nome": "A4 Consumo em kWh - Ponta",
+        "unidade": "KWh",
+        "tarifa": 1,
+        "saldo": 1,
+        "injecao_usina": false,
+        "SCEE": true,
+        "ordem": 1
+    },
+    {
+        "id_itens_fatura": 2,
+        "nome": "A4 Consumo em kWh - Fora Ponta",
+        "unidade": "KWh",
+        "tarifa": 2,
+        "saldo": 1,
+        "injecao_usina": false,
+        "SCEE": true,
+        "ordem": 3
+    },
+    {
+        "id_itens_fatura": 3,
+        "nome": "A4 Energia Injetada em kWh - Fora Ponta",
+        "unidade": "KWh",
+        "tarifa": 2,
+        "saldo": -1,
+        "injecao_usina": true,
+        "SCEE": true,
+        "ordem": 4
+    },
+    {
+        "id_itens_fatura": 4,
+        "nome": "A4 Energia Injetada em kWh - Ponta",
+        "unidade": "KWh",
+        "tarifa": 1,
+        "saldo": -1,
+        "injecao_usina": true,
+        "SCEE": true,
+        "ordem": 2
+    },
+    {
+        "id_itens_fatura": 5,
+        "nome": "Energia Reativa Excedente em kWh - Fora Ponta",
+        "unidade": "UN",
+        "tarifa": null,
+        "saldo": 1,
+        "injecao_usina": false,
+        "SCEE": false,
+        "ordem": 6
+    },
+    {
+        "id_itens_fatura": 6,
+        "nome": "Demanda de Potência Medida em kWh - Fora Ponta",
+        "unidade": "KW",
+        "tarifa": null,
+        "saldo": 1,
+        "injecao_usina": false,
+        "SCEE": false,
+        "ordem": 9
+    },
+    {
+        "id_itens_fatura": 7,
+        "nome": "Demanda de Potência Não Consumida em kWh - Fora Ponta",
+        "unidade": "KW",
+        "tarifa": null,
+        "saldo": 1,
+        "injecao_usina": false,
+        "SCEE": false,
+        "ordem": 10
+    },
+    {
+        "id_itens_fatura": 8,
+        "nome": "Demanda de Potência Não Consumida em kWh - Ponta",
+        "unidade": "KW",
+        "tarifa": null,
+        "saldo": 1,
+        "injecao_usina": false,
+        "SCEE": false,
+        "ordem": 8
+    },
+    {
+        "id_itens_fatura": 9,
+        "nome": "Energia Reativa Excedente em kWh - Ponta",
+        "unidade": "UN",
+        "tarifa": null,
+        "saldo": 1,
+        "injecao_usina": false,
+        "SCEE": false,
+        "ordem": 5
+    },
+    {
+        "id_itens_fatura": 10,
+        "nome": "Demanda de Potência Medida em kWh - Ponta",
+        "unidade": "KW",
+        "tarifa": null,
+        "saldo": 1,
+        "injecao_usina": false,
+        "SCEE": false,
+        "ordem": 7
+    },
+    {
+        "id_itens_fatura": 11,
+        "nome": "Contr. de Ilum. Pública",
+        "unidade": null,
+        "tarifa": null,
+        "saldo": 1,
+        "injecao_usina": false,
+        "SCEE": false,
+        "ordem": 11
+    }
+]

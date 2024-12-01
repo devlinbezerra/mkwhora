@@ -1,0 +1,100 @@
+[
+    {
+        "id_item_fatura_agencia": 1,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 1,
+        "quantidade": "1869.45",
+        "valor": "5184.03"
+    },
+    {
+        "id_item_fatura_agencia": 5,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 2,
+        "quantidade": "17960.63",
+        "valor": "9488.84"
+    },
+    {
+        "id_item_fatura_agencia": 11,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 4,
+        "quantidade": "29.79",
+        "valor": "-82.61"
+    },
+    {
+        "id_item_fatura_agencia": 12,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 4,
+        "quantidade": "1839.67",
+        "valor": "-5101.45"
+    },
+    {
+        "id_item_fatura_agencia": 13,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 3,
+        "quantidade": "215.56",
+        "valor": "-113.88"
+    },
+    {
+        "id_item_fatura_agencia": 14,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 3,
+        "quantidade": "13602.81",
+        "valor": "-7186.54"
+    },
+    {
+        "id_item_fatura_agencia": 15,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 3,
+        "quantidade": "1567.78",
+        "valor": "-828.28"
+    },
+    {
+        "id_item_fatura_agencia": 16,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 3,
+        "quantidade": "1704.35",
+        "valor": "-900.43"
+    },
+    {
+        "id_item_fatura_agencia": 17,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 3,
+        "quantidade": "870.14",
+        "valor": "-459.71"
+    },
+    {
+        "id_item_fatura_agencia": 19,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 9,
+        "quantidade": null,
+        "valorInput": "16.31"
+    },
+    {
+        "id_item_fatura_agencia": 20,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 5,
+        "quantidade": null,
+        "valorInput": "114.65"
+    },
+    {
+        "id_item_fatura_agencia": 21,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 6,
+        "quantidade": null,
+        "valorInput": "1897.76"
+    },
+    {
+        "id_item_fatura_agencia": 22,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 7,
+        "quantidade": null,
+        "valorInput": "205.45"
+    },
+    {
+        "id_item_fatura_agencia": 23,
+        "id_fatura_agencia": 1,
+        "item_fatura_agencia": 11,
+        "quantidade": null,
+        "valorInput": "361.61"
+    }
+]

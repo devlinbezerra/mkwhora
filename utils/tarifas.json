@@ -1,0 +1,22 @@
+[
+    {
+        "id_tarifa": 1,
+        "subgrupo": 4,
+        "posto_tarifario": "Ponta",
+        "tarifa_tusd": "1.72668",
+        "tarifa_te": "0.48885",
+        "tarifa_total": "2.21553",
+        "revisao_tarifaria": 1,
+        "modalidade": "Verde"
+    },
+    {
+        "id_tarifa": 2,
+        "subgrupo": 4,
+        "posto_tarifario": "Fora Ponta",
+        "tarifa_tusd": "0.10759",
+        "tarifa_te": "0.31451",
+        "tarifa_total": "0.42210",
+        "revisao_tarifaria": 1,
+        "modalidade": "Verde"
+    }
+]
