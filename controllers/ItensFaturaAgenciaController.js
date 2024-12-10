@@ -3,8 +3,8 @@ const ItensFatura = require('../models/ModelItensFatura');
 const Tarifas = require('../models/ModelTarifas');
 const FaturaAgencia = require('../models/ModelFaturasAgencia');
 const Ucs = require('../models/ModelUcs');
-const Bandeira = require('../models/ModelBandeira');
 const checkDuplicidade = require('../services/checkDuplicidade');
+const atualizarStatusFatura = require('../services/atualizarStatusFatura')
 
 //Carregar variáveis externas
 
@@ -71,8 +71,6 @@ const fetchTarifaTotal = async (itemFaturaAgenciaId) => {
 
 
 module.exports = {
-  //Trazer o total da fatura
-  
 
   // Listar todos os itens de fatura da agência
   async getAll(req, res) {
@@ -113,7 +111,7 @@ module.exports = {
       }
 
       // Validação de duplicidade
-      //await checkDuplicidade(ItensFaturaAgencia, { id_fatura_agencia, item_fatura_agencia });
+      await checkDuplicidade(ItensFaturaAgencia, { id_fatura_agencia, item_fatura_agencia });
 
       //Pegando dados de parâmetro do item da fatura selecionado
       const dadosItemFatura = await ItensFatura.findByPk(item_fatura_agencia);
@@ -185,6 +183,9 @@ module.exports = {
         valor
       });
 
+      //Atualiza o status da fatura
+      atualizarStatusFatura(newFatura.id_fatura);      
+
       // Retorna o novo registro criado
       res.status(201).json(newItem);
     } catch (error) {
@@ -194,7 +195,7 @@ module.exports = {
         return res.status(400).json({ error: error.message }); // Retorna erro 400 com a mensagem correta
       }
 
-      res.status(500).json({ error: 'Erro ao criar o subgrupo.', details: error.message });
+      res.status(500).json({ error: 'Erro ao criar o fatura.', details: error.message });
     }
   },
 
@@ -216,6 +217,9 @@ module.exports = {
       itemRecord.valor = valor;
 
       await itemRecord.save();
+
+      //Atualiza o status da fatura
+      atualizarStatusFatura(newFatura.id_fatura);  
 
       res.status(200).json(itemRecord);
     } catch (error) {

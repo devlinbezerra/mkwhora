@@ -56,6 +56,10 @@ const ModelUcs = sequelize.define('Ucs', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  desagio: {
+    type: DataTypes.DECIMAL,
+    allowNull: false,
+  },
   autoconsumo_remoto: {
     type: DataTypes.BOOLEAN,
     allowNull: true,

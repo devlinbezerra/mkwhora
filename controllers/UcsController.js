@@ -42,6 +42,7 @@ module.exports = {
         cnpj_titular,
         modalidade,
         localizacao,
+        desagio,
         autoconsumo_remoto
       } = req.body;
 
@@ -67,6 +68,7 @@ module.exports = {
         cnpj_titular,
         modalidade,
         localizacao,
+        desagio,
         autoconsumo_remoto
       });
 
@@ -100,6 +102,7 @@ module.exports = {
         cnpj_titular,
         modalidade,
         localizacao,
+        desagio,
         autoconsumo_remoto
       } = req.body;
 
@@ -121,6 +124,7 @@ module.exports = {
       ucRecord.cnpj_titular = cnpj_titular;
       ucRecord.modalidade = modalidade;
       ucRecord.localizacao = localizacao;
+      ucRecord.desagio = desagio;
       ucRecord.autoconsumo_remoto = autoconsumo_remoto;
 
       await ucRecord.save();

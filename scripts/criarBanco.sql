@@ -26,6 +26,7 @@ CREATE TABLE ucs (
 	cnpj_titular varchar(50),
 	modalidade varchar(50),
     localizacao varchar(255),
+    desagio decimal(10,2),
     autoconsumo_remoto boolean,
     foreign key (consumidor) references consumidores(id_consumidor)
 );
@@ -45,8 +46,10 @@ CREATE TABLE faturas_agencia (
 	aliq_cofins decimal(10,7) not null,
 	aliq_icms decimal(10,7) not null,
     bandeira int,
+    status_fatura int,
     FOREIGN KEY (uc) REFERENCES ucs(id_uc),
-    FOREIGN KEY (bandeira) REFERENCES bandeira(id_bandeira)
+    FOREIGN KEY (bandeira) REFERENCES bandeira(id_bandeira),
+    FOREIGN KEY (status_fatura) REFERENCES aux_status_fatura(id_status)
 );
 
 CREATE TABLE faturas_usina (
@@ -190,3 +193,19 @@ CREATE TABLE aux_usinas (
     potencia varchar(255),
     tipo varchar(255)
 );
+
+CREATE TABLE aux_status_fatura (
+    id_status int primary key auto_increment,
+    descricao varchar(255)
+);
+
+/*Insert tabela aux_status_fatura
+* 1 - Pendente
+* 2 - A Faturar
+* 3 - Faturado
+* 4 - Pago
+*/
+insert into aux_status_fatura values (null,'Pendente');
+insert into aux_status_fatura values (null,'A Faturar');
+insert into aux_status_fatura values (null,'Faturado');
+insert into aux_status_fatura values (null,'Pago');

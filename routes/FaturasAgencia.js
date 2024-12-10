@@ -3,8 +3,8 @@ const router = express.Router();
 const FaturasAgenciaController = require('../controllers/FaturasAgenciaController');
 const { route } = require('./ItensFaturaAgencia');
 
-//Pega o total da fatura
-router.get('/total/:id', FaturasAgenciaController.getTotal);
+// Listar todas as faturas da agência
+router.get('/lista', FaturasAgenciaController.listFaturas);
 
 // Listar todas as faturas da agência
 router.get('/', FaturasAgenciaController.getAll);
