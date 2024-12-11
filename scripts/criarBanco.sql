@@ -58,8 +58,8 @@ CREATE TABLE faturas_usina (
     valor_sem_gd decimal(10, 2),
     valor_com_gd decimal(10, 2),
     economia decimal(10, 2),
+    desagio decimal(10, 2),
     obs text,
-    gerado boolean,
     FOREIGN KEY (id_fatura_agencia) REFERENCES faturas_agencia(id_fatura_agencia)
 );
 /** Tabela onde é registrado os itens de cada fatura**/ 

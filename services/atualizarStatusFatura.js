@@ -2,6 +2,13 @@ const sequelize = require('sequelize');
 const FaturaAgencia = require('../models/ModelFaturasAgencia');
 const ItensFaturaAgencia = require('../models/ModelItensFaturaAgencia'); // Ajuste o caminho para seu arquivo de modelos
 
+/**
+* 1 - Pendente
+* 2 - A Faturar
+* 3 - Faturado
+* 4 - Pago
+*/
+
 const atualizarStatusFatura = async (idFaturaAgencia) => {
 
   try {
@@ -34,12 +41,6 @@ const atualizarStatusFatura = async (idFaturaAgencia) => {
       //console.log('Deu MENOR que 1');
       status_fatura =  2;
     }
-    /**
-    * 1 - Pendente
-    * 2 - A Faturar
-    * 3 - Faturado
-    * 4 - Pago
-    */
 
     fatura.status_fatura = status_fatura;
 
@@ -51,4 +52,25 @@ const atualizarStatusFatura = async (idFaturaAgencia) => {
   }
 };
 
-module.exports = atualizarStatusFatura;
+const alterarStatusParaFaturado = async (idFaturaAgencia) => {
+  try {
+    const fatura = await FaturaAgencia.findByPk(idFaturaAgencia);
+
+    if (!fatura) {
+      throw new Error('Fatura não encontrada');
+    }
+
+    fatura.status_fatura = 3; // Faturado
+    await fatura.save();
+
+    console.log(`Status da fatura ${idFaturaAgencia} alterado para Faturado (3)`);
+  } catch (error) {
+    console.error('Erro ao alterar o status da fatura para Faturado:', error);
+    throw error;
+  }
+};
+
+module.exports = {
+  atualizarStatusFatura,
+  alterarStatusParaFaturado,
+};

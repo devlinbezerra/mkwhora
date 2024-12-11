@@ -139,19 +139,19 @@ module.exports = {
       }
 
       // Atualiza os dados da fatura
-      fatura.uc = uc;
-      fatura.referencia = referencia;
-      fatura.data_vencimento = data_vencimento;
-      fatura.data_leitura_atual = data_leitura_atual;
-      fatura.data_leitura_anterior = data_leitura_anterior;
-      fatura.data_emissao = data_emissao;
-      fatura.data_apresentacao = data_apresentacao;
-      fatura.data_prox_leitura = data_prox_leitura;
-      fatura.valor_fatura = valor_fatura;
-      fatura.aliq_pis = aliq_pis;
-      fatura.aliq_cofins = aliq_cofins;
-      fatura.aliq_icms = aliq_icms;
-      fatura.bandeira = bandeira;
+      fatura.uc = uc || fatura.uc ;
+      fatura.referencia = referencia || fatura.referencia ;
+      fatura.data_vencimento = data_vencimento || fatura.data_vencimento ;
+      fatura.data_leitura_atual = data_leitura_atual || fatura.data_leitura_atual ;
+      fatura.data_leitura_anterior = data_leitura_anterior || fatura.data_leitura_anterior ;
+      fatura.data_emissao = data_emissao || fatura.data_emissao ;
+      fatura.data_apresentacao = data_apresentacao || fatura.data_apresentacao ;
+      fatura.data_prox_leitura = data_prox_leitura || fatura.data_prox_leitura ;
+      fatura.valor_fatura = valor_fatura || fatura.valor_fatura ;
+      fatura.aliq_pis = aliq_pis || fatura.aliq_pis ;
+      fatura.aliq_cofins = aliq_cofins || fatura.aliq_cofins ;
+      fatura.aliq_icms = aliq_icms || fatura.aliq_icms ;
+      fatura.bandeira = bandeira || fatura.bandeira ;
 
       await fatura.save();
 

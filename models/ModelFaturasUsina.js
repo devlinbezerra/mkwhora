@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../database'); // Adjust the path as necessary
+const sequelize = require('../config/database'); // Adjust the path as necessary
 
 const ModelFaturasUsina = sequelize.define('FaturasUsina', {
   id_fatura_usina: {
@@ -24,12 +24,12 @@ const ModelFaturasUsina = sequelize.define('FaturasUsina', {
     type: DataTypes.DECIMAL,
     allowNull: true,
   },
-  obs: {
-    type: DataTypes.TEXT,
+  desagio: {
+    type: DataTypes.DECIMAL,
     allowNull: true,
   },
-  gerado: {
-    type: DataTypes.BOOLEAN,
+  obs: {
+    type: DataTypes.TEXT,
     allowNull: true,
   }
 }, {

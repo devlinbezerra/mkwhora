@@ -12,6 +12,7 @@ const Compensacao = require('./Compensacao');
 const Consumidores = require('./Consumidores');
 const Contratos = require('./Contratos');
 const FaturasAgencia = require('./FaturasAgencia');
+const FaturasUsina = require('./FaturasUsina');
 const Geracao = require('./Geracao');
 const ItensCompensacao = require('./ItensCompensacao');
 const ItensFatura = require('./ItensFatura');
@@ -21,6 +22,7 @@ const Tarifas = require('./Tarifas');
 const Ucs = require('./Ucs');
 const UcsContrato = require('./UcsContrato');
 const Bandeira = require('./Bandeira');
+
 
 // Define os endpoints para cada conjunto de rotas
 router.use('/subgrupos', auxSubgrupoRoutes);
@@ -42,5 +44,6 @@ router.use('/tarifas', Tarifas);
 router.use('/ucs', Ucs);
 router.use('/ucscontrato', UcsContrato);
 router.use('/bandeira', Bandeira);
+router.use('/faturasusina', FaturasUsina);
 
 module.exports = router;

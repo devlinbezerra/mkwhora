@@ -85,7 +85,7 @@ class ListaFaturas {
         throw new Error('Bandeira não encontrada para o UC informado.');
       }
 
-      return result[0].bandeira;
+      return result.bandeira;
     } catch (error) {
       console.error('Erro ao verificar bandeira:', error.message);
       throw error;

@@ -1,7 +1,7 @@
 const ModelFaturasUsina = require('../models/ModelFaturasUsina');
-const ModelContratos = require('../models/ModelContratos');
 const checkDuplicidade = require('../services/checkDuplicidade');
 const listaFatura = require('../services/listaFaturas');
+const atualizaStatus = require('../services/atualizarStatusFatura');
 
 module.exports = {
 
@@ -45,24 +45,39 @@ module.exports = {
       await checkDuplicidade(ModelFaturasUsina, { id_fatura_agencia });
 
       //Pegar dados da fatura
-      const fatura = await listaFatura.listaFaturas(id_fatura_agencia);
+      const {
+        uc, //id da UC
+        uc_codigo, //Código da UC que vem na fatura de energia
+        referencia,
+        valor_fatura,
+        cod_bandeira,
+        bandeira,
+        cod_status,
+        status,
+        desagio,
+        valor_sem_desagio,
+        valor_com_desagio,
+        bandeira_sem_gd,
+        bandeira_com_gd
+
+      } = await listaFatura.listaFaturas(id_fatura_agencia);
 
       //Verificar se o status da fatura permite o faturamento.
-      if(fatura.cod_status <= 1){//Faltou bloquear se o status for 'Faturado'. Aí só bloqueia o que está como pendente.
-        return res.status(400).json({ error: `Fatura está com o status ${fatura.status} e por isso não está apta para faturamento`});
-      }
+      if(cod_status <= 1){//Faltou bloquear se o status for 'Faturado'. Aí só bloqueia o que está como pendente.
+        return res.status(400).json({ error: `Fatura está com o status ${status} e por isso não está apta para faturamento`});
+      }      
 
-      //trazer valor faturável, ou seja, que foi oriundo de injeção da usina
-      const valor_a_faturar = fatura.valor_sem_gd;
-
-      //Não precisa Verificar se houve bandeira, pois se for bandeira verde será com tarifa zero, portanto não haverá valor.
+      //Atibuir valores as constantes: valor_sem_gd, valor_com_gd
+      const valor_sem_gd = Number(valor_sem_desagio) + Number(bandeira_sem_gd);
+      let valor_com_gd;
 
       //Verificar se o contrato também permite faturar a bandeira, pois pode ser que foi acordado com o cliente que ele nucna pagaria bandeira.
-      const faturaBandeira = await listaFatura.verificaBandeira(fatura.uc);
-
-      //Aplicar o deságio em todos os valores faturáveis
-
-      //Atibuir valores as constantes: valor_sem_gd, valor_com_gd, economia, gerado
+      const faturaBandeira = await listaFatura.verificaBandeira(uc);
+      faturaBandeira 
+        ? valor_com_gd = Number(valor_com_desagio) + Number(bandeira_com_gd) 
+        : valor_com_gd = Number(valor_com_desagio); 
+     
+      const economia = valor_sem_gd - valor_com_gd;
 
       // Cria a nova fatura de usina
       const novaFaturaUsina = await ModelFaturasUsina.create({
@@ -70,9 +85,12 @@ module.exports = {
         valor_sem_gd,
         valor_com_gd,
         economia,
-        obs,
-        gerado
+        desagio,
+        obs
       });
+
+      //Alterar o status da fatura_agencia para Faturado
+      await atualizaStatus.alterarStatusParaFaturado(id_fatura_agencia);
 
       res.status(201).json(novaFaturaUsina);
     } catch (error) {
@@ -80,7 +98,7 @@ module.exports = {
         return res.status(400).json({ error: error.message });
       }
 
-      res.status(500).json({ error: 'Erro ao criar a fatura de usina.' });
+      res.status(500).json({ error: 'Erro ao criar a fatura de usina.', details: error.message });
     }
   },
 
@@ -120,6 +138,8 @@ module.exports = {
       if (!faturaUsina) {
         return res.status(404).json({ error: 'Fatura de usina não encontrada.' });
       }
+
+      await atualizaStatus.atualizarStatusFatura(id);
 
       await faturaUsina.destroy();
       res.status(200).json({ message: 'Fatura de usina deletada com sucesso.' });
