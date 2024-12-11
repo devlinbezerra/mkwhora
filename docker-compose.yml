@@ -1,0 +1,45 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:3000"         # Porta externa 4000 para o back-end
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DB_USER=${DB_USER}         # Corrigido para corresponder ao .env
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=database            # Nome correto do serviço Docker
+      - DB_PORT=3306
+      - JWT_SECRET=${JWT_SECRET}
+      - PORT=${PORT}                # Porta do servidor Node.js
+    depends_on:
+      - database                   # Aguarda a inicialização do banco
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5500:80"                  # Porta do front-end
+    volumes:
+      - ./frontend:/usr/share/nginx/html
+
+  database:
+    image: mysql:8.0
+    platform: linux/amd64    # Compatível com Mac M1/M2
+    ports:
+      - "3333:3306"          # Porta de acesso externo
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}    # Senha para o usuário root
+      - MYSQL_DATABASE=${DB_NAME}             # Nome do banco criado automaticamente
+    volumes:
+      - db_data:/var/lib/mysql
+
+
+volumes:
+  db_data:                         # Volume para persistência de dados
