@@ -27,6 +27,10 @@ const ModelContratos = sequelize.define('Contratos', {
   desagio_b: {
     type: DataTypes.DECIMAL,
     allowNull: true,
+  },
+  bandeira: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
   }
 }, {
   tableName: 'contratos',

@@ -93,4 +93,5 @@ ModelFaturasAgencia.belongsTo(Ucs, { foreignKey: 'uc', as: 'u' });
 ModelFaturasAgencia.belongsTo(Bandeira, { foreignKey: 'bandeira', as: 'b' });
 ModelFaturasAgencia.belongsTo(AuxStatusFatura, { foreignKey: 'status_fatura', as: 's' });
 
+
 module.exports = ModelFaturasAgencia;

@@ -32,8 +32,8 @@ module.exports = {
       const { descricao, tarifa_bandeira } = req.body;
 
       // Validação dos campos obrigatórios
-      if (!descricao || !tarifa_bandeira) {
-        return res.status(400).json({ error: 'Campos obrigatórios: descricao e tarifa_bandeira.' });
+      if (!descricao ) {
+        return res.status(400).json({ error: 'Campos obrigatórios: descricao.' });
       }
 
       // Validação de duplicidade

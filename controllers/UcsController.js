@@ -1,4 +1,5 @@
 const Ucs = require('../models/ModelUcs');
+const UcsContrato = require('../models/ModelUcsContrato');
 const checkDuplicidade = require('../services/checkDuplicidade');
 
 module.exports = {
@@ -43,7 +44,8 @@ module.exports = {
         modalidade,
         localizacao,
         desagio,
-        autoconsumo_remoto
+        autoconsumo_remoto,
+        id_contrato
       } = req.body;
 
       // Validação dos campos obrigatórios (ajuste conforme necessidade)
@@ -53,6 +55,8 @@ module.exports = {
 
       // Validação de duplicidade
       await checkDuplicidade(Ucs, { codigo_uc });
+
+      //Faltou associar a UC a um contrato
 
       // Cria a nova UC no banco de dados
       const newUc = await Ucs.create({
@@ -71,6 +75,17 @@ module.exports = {
         desagio,
         autoconsumo_remoto
       });
+
+      //Assoicar UC ao contrato
+      const id_uc = newUc.id_uc;
+      try{
+        UcsContrato.create({
+          id_uc,
+          id_contrato
+        })
+      } catch(error){
+        res.status(500).json({ error: 'Erro ao criar o subgrupo.', details: error.message  });
+      }
 
       // Retorna o novo registro criado
       res.status(201).json(newUc);

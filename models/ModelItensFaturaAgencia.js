@@ -34,12 +34,16 @@ const ModelItensFaturaAgencia = sequelize.define('ItensFaturaAgencia', {
 // Associações
 ModelItensFaturaAgencia.belongsTo(FaturasAgencia, {
   foreignKey: 'id_fatura_agencia',
-  as: 'faturaAgencia',
+  as: 'ifa',
 });
 
 ModelItensFaturaAgencia.belongsTo(ItensFatura, {
   foreignKey: 'item_fatura_agencia',
   as: 'itemFatura',
 });
+
+
+ModelItensFaturaAgencia.belongsTo(ItensFatura, { foreignKey: 'item_fatura_agencia', as: 'i' });
+
 
 module.exports = ModelItensFaturaAgencia;

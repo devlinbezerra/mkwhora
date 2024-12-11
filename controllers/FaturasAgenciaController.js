@@ -5,14 +5,22 @@ const listaFaturas = require('../services/listaFaturas');
 
 module.exports = {
     
-  //Listar faturas com status para relação de faturamento
-  async listFaturas(req, res) {
-      try {
-        const faturas = await listaFaturas.listFaturas();
-        res.status(200).json(faturas);
-      } catch (error) {
-        res.status(500).json({ error: 'Erro ao listar as faturas.', details: error.message });
-      }
+  // Listar faturas com status para relação de faturamento
+  async listaFaturas(req, res) {
+    try {
+      // Extrai o id_fatura_agencia da query string
+      const { id_fatura_agencia } = req.params;
+
+      // Chama o serviço passando id_fatura_agencia ou undefined
+      const faturas = await listaFaturas.listaFaturas(id_fatura_agencia || null);
+
+      res.status(200).json(faturas);
+    } catch (error) {
+      res.status(500).json({
+        error: 'Erro ao listar as faturas.',
+        details: error.message,
+      });
+    }
   },
   
   
@@ -148,11 +156,11 @@ module.exports = {
       await fatura.save();
 
       //Atualiza o status da fatura
-      atualizarStatusFatura(newFatura.id_fatura);
+      atualizarStatusFatura(id);
 
       res.status(200).json(fatura);
     } catch (error) {
-      res.status(500).json({ error: 'Erro ao atualizar a fatura da agência.' });
+      res.status(500).json({ error: 'Erro ao atualizar a fatura da agência.', details: error.message });
     }
   },
 

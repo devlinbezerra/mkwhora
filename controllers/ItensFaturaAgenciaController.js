@@ -184,7 +184,7 @@ module.exports = {
       });
 
       //Atualiza o status da fatura
-      atualizarStatusFatura(newFatura.id_fatura);      
+      atualizarStatusFatura(id_fatura_agencia);      
 
       // Retorna o novo registro criado
       res.status(201).json(newItem);

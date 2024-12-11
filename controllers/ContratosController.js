@@ -29,7 +29,7 @@ module.exports = {
   // Criar um novo contrato
   async create(req, res) {
     try {
-      const { id_consumidor, data_inicio, data_fim, desagio_a, desagio_b } = req.body;
+      const { id_consumidor, data_inicio, data_fim, desagio_a, desagio_b, bandeira } = req.body;
 
       // Validação dos campos obrigatórios
       if (!id_consumidor || !data_inicio || !data_fim) {
@@ -45,7 +45,8 @@ module.exports = {
         data_inicio,
         data_fim,
         desagio_a,
-        desagio_b
+        desagio_b,
+        bandeira
       });
 
       // Retorna o novo registro criado
@@ -57,7 +58,7 @@ module.exports = {
         return res.status(400).json({ error: error.message }); // Retorna erro 400 com a mensagem correta
       }
 
-      res.status(500).json({ error: 'Erro ao criar o subgrupo.', /* details: error.message */ });
+      res.status(500).json({ error: 'Erro ao criar contrato.',  details: error.message });
     }
   },
 
@@ -65,7 +66,7 @@ module.exports = {
   async update(req, res) {
     try {
       const { id } = req.params;
-      const { id_consumidor, data_inicio, data_fim, desagio_a, desagio_b } = req.body;
+      const { id_consumidor, data_inicio, data_fim, desagio_a, desagio_b, bandeira } = req.body;
 
       const contrato = await Contratos.findByPk(id);
       if (!contrato) {
@@ -78,12 +79,13 @@ module.exports = {
       contrato.data_fim = data_fim;
       contrato.desagio_a = desagio_a;
       contrato.desagio_b = desagio_b;
+      contrato.bandeira = bandeira;
 
       await contrato.save();
 
       res.status(200).json(contrato);
     } catch (error) {
-      res.status(500).json({ error: 'Erro ao atualizar o contrato.' });
+      res.status(500).json({ error: 'Erro ao atualizar o contrato.', details: error.message });
     }
   },
 

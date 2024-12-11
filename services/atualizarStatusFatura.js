@@ -23,6 +23,9 @@ const atualizarStatusFatura = async (idFaturaAgencia) => {
     const valor_fatura = fatura.valor_fatura;
     let status_fatura;
 
+    //console.log(`Esse é o valor total dos itens ${total}`);
+    //console.log(`Esse é o valor total da fatura ${valor_fatura}`);
+
     //Compara os resultados com tolerância de 1. Atribui 1 para pendente e 2 para deixar disponível para faturamento.
     if(Math.abs(total - valor_fatura) > 1){
       //console.log('Deu MAIOR que 1');

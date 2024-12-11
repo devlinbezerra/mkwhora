@@ -131,6 +131,7 @@ CREATE TABLE contratos (
     data_fim date,
     desagio_a decimal(10,2),
     desagio_b decimal(10,2),
+    bandeira boolean,
     FOREIGN KEY (id_consumidor) REFERENCES consumidores(id_consumidor)
 );
 

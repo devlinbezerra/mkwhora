@@ -3,8 +3,11 @@ const router = express.Router();
 const FaturasAgenciaController = require('../controllers/FaturasAgenciaController');
 const { route } = require('./ItensFaturaAgencia');
 
-// Listar todas as faturas da agência
-router.get('/lista', FaturasAgenciaController.listFaturas);
+// Listar dados para faturar de uma fatura específica da agência
+router.get('/lista/:id_fatura_agencia?', FaturasAgenciaController.listaFaturas);
+
+// Listar os dados de todas as faturas da agência para faturar
+router.get('/lista', FaturasAgenciaController.listaFaturas);
 
 // Listar todas as faturas da agência
 router.get('/', FaturasAgenciaController.getAll);
