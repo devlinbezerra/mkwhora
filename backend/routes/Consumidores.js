@@ -1,20 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const CondumidoresController = require('../controllers/ConsumidoresController');
+const ConsumidoresController = require('../controllers/ConsumidoresController');
+
+// Listar consumidores formatados para campos select
+router.get('/options', ConsumidoresController.getSelectOptions);
 
 // Listar todos os subgrupos
-router.get('/', CondumidoresController.getAll);
+router.get('/', ConsumidoresController.getAll);
 
 // Buscar subgrupo por ID
-router.get('/:id', CondumidoresController.getById);
+router.get('/:id', ConsumidoresController.getById);
 
 // Criar um novo subgrupo
-router.post('/', CondumidoresController.create);
+router.post('/', ConsumidoresController.create);
 
 // Atualizar um subgrupo existente
-router.put('/:id', CondumidoresController.update);
+router.put('/:id', ConsumidoresController.update);
 
 // Deletar um subgrupo
-router.delete('/:id', CondumidoresController.delete);
+router.delete('/:id', ConsumidoresController.delete);
 
 module.exports = router;

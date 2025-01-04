@@ -12,6 +12,24 @@ module.exports = {
     }
   },
 
+  // Listar consumidores formatados para campos select
+  async getSelectOptions(req, res) {
+    console.log('getSelectOptions');
+    try {
+      const consumidores = await Consumidores.findAll();
+
+      // Formatar os consumidores para o formato esperado no select
+      const options = consumidores.map((consumidor) => ({
+        value: consumidor.id_consumidor, // ID usado no backend e enviado no formulário
+        label: consumidor.nome_fantasia // Nome exibido no dropdown
+      }));
+
+      res.status(200).json(options);
+    } catch (error) {
+      res.status(500).json({ error: 'Erro ao buscar as opções de consumidores.' });
+    }
+  },
+
   // Buscar consumidor por ID
   async getById(req, res) {
     try {

@@ -22,6 +22,7 @@ const Tarifas = require('./Tarifas');
 const Ucs = require('./Ucs');
 const UcsContrato = require('./UcsContrato');
 const Bandeira = require('./Bandeira');
+//const LerFaturaPdf = require('./LerFaturaPdf');
 
 
 // Define os endpoints para cada conjunto de rotas
@@ -45,5 +46,6 @@ router.use('/ucs', Ucs);
 router.use('/ucscontrato', UcsContrato);
 router.use('/bandeira', Bandeira);
 router.use('/faturasusina', FaturasUsina);
+//router.use('/lerfatura', LerFaturaPdf);
 
 module.exports = router;

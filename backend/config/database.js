@@ -1,5 +1,5 @@
 const { Sequelize } = require('sequelize');
-require('dotenv').config(); // Carrega variáveis do .env
+require('dotenv').config({ path: '../../.env' }); // Carrega variáveis do .env
 
 // Configura a instância do Sequelize
 const sequelize = new Sequelize(
@@ -18,6 +18,7 @@ const sequelize = new Sequelize(
     },
   }
 );
+
 
 // Testar a conexão com o banco de dados
 sequelize.authenticate()
