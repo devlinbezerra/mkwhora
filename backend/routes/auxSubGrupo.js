@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const AuxSubgrupoController = require('../controllers/auxSubGrupoController');
 
+// Listar subgrupos formatados para campos select
+router.get('/options', AuxSubgrupoController.getSelectOptions);
+
 // Listar todos os subgrupos
 router.get('/', AuxSubgrupoController.getAll);
 

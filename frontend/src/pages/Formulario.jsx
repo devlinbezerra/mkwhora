@@ -3,58 +3,68 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import Autocomplete from '@mui/material/Autocomplete';
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import InputMask from 'react-input-mask';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import RadioGroup from '@mui/material/RadioGroup';
 import Radio from '@mui/material/Radio';
 import Checkbox from '@mui/material/Checkbox';
-import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { useParams } from 'react-router-dom';
-
-// project import
 import MainCard from 'components/MainCard';
+import Select from '@mui/material/Select';
+import { useParams } from 'react-router-dom';
 
 export default function GenericForm({ title, fields, endpointPath }) {
   const { id } = useParams();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const initialFormState = fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {});
   const [formData, setFormData] = useState(initialFormState);
+  const [options, setOptions] = useState({});
+  const [filteredOptions, setFilteredOptions] = useState({});
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [severity, setSeverity] = useState('success');
-  const [selectOptions, setSelectOptions] = useState({});
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     if (id) {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(`${API_BASE_URL}${endpointPath}/${id}`);
-          setFormData(response.data);
-        } catch (error) {
-          console.error('Erro ao carregar dados do item:', error);
-        }
-      };
-      fetchData();
+      axios.get(`${API_BASE_URL}${endpointPath}/${id}`)
+        .then((response) => setFormData(response.data))
+        .catch((error) => console.error('Erro ao carregar dados do item:', error));
     }
 
     fields.forEach((field) => {
-      if (field.type === 'select' && field.optionsEndpoint) {
+      if (field.type === 'autocomplete') {
         axios.get(`${API_BASE_URL}${field.optionsEndpoint}`)
           .then((response) => {
-            setSelectOptions((prev) => ({ ...prev, [field.name]: response.data }));
+            setOptions((prev) => ({ ...prev, [field.name]: response.data }));
+            setFilteredOptions((prev) => ({ ...prev, [field.name]: response.data }));
           })
-          .catch((error) => {
-            console.error(`Erro ao carregar opções para ${field.name}:`, error);
-          });
+          .catch((error) => console.error(`Erro ao carregar opções para ${field.name}:`, error));
+      } else if (field.type === 'select') {
+        axios.get(`${API_BASE_URL}${field.optionsEndpoint}`)
+          .then((response) => {
+            setOptions((prev) => ({ ...prev, [field.name]: response.data }));
+          })
+          .catch((error) => console.error(`Erro ao carregar opções para ${field.name}:`, error));
       }
     });
   }, [id, API_BASE_URL, endpointPath, fields]);
+
+  const handleAutocompleteInputChange = (value, field) => {
+    const fieldOptions = options[field.name] || [];
+    setFilteredOptions((prev) => ({
+      ...prev,
+      [field.name]: fieldOptions.filter((option) =>
+        option.label.toLowerCase().includes(value.toLowerCase())
+      ),
+    }));
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -64,20 +74,12 @@ export default function GenericForm({ title, fields, endpointPath }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage('');
-
     try {
-      const url = `${API_BASE_URL}${endpointPath}${id ? `/${id}` : ''}`;
       const method = id ? 'put' : 'post';
-
-      const response = await axios[method](url, formData);
-
+      await axios[method](`${API_BASE_URL}${endpointPath}${id ? `/${id}` : ''}`, formData);
       setMessage('Operação realizada com sucesso!');
       setSeverity('success');
       setOpenSnackbar(true);
-
-      if (!id) setFormData(initialFormState);
-      console.log('Response:', response.data);
     } catch (error) {
       console.error('Erro ao salvar:', error);
       setMessage('Erro ao realizar a operação. Tente novamente.');
@@ -88,23 +90,9 @@ export default function GenericForm({ title, fields, endpointPath }) {
     }
   };
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
-
   return (
     <MainCard title={title}>
-      <Box
-        component="form"
-        noValidate
-        autoComplete="off"
-        onSubmit={handleSubmit}
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-      >
-        <Typography variant="h6" gutterBottom>
-          Preencha os detalhes abaixo:
-        </Typography>
-
+      <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {fields.map((field) => {
           if (field.type === 'text' || field.type === 'number' || field.type === 'email') {
             return (
@@ -118,6 +106,26 @@ export default function GenericForm({ title, fields, endpointPath }) {
                 fullWidth
                 required={field.required}
               />
+            );
+          }
+
+          if (field.type === 'mask') {
+            return (
+              <InputMask
+                key={field.name}
+                mask={field.mask}
+                value={formData[field.name] || ''}
+                onChange={handleChange}
+              >
+                {() => (
+                  <TextField
+                    label={field.label}
+                    name={field.name}
+                    fullWidth
+                    required={field.required}
+                  />
+                )}
+              </InputMask>
             );
           }
 
@@ -159,6 +167,22 @@ export default function GenericForm({ title, fields, endpointPath }) {
             );
           }
 
+          if (field.type === 'autocomplete') {
+            return (
+              <Autocomplete
+                key={field.name}
+                options={filteredOptions[field.name] || []}
+                getOptionLabel={(option) => option.label}
+                onInputChange={(_, value) => handleAutocompleteInputChange(value, field)}
+                onChange={(_, value) => handleChange({ target: { name: field.name, value: value?.value || '' } })}
+                renderInput={(params) => (
+                  <TextField {...params} label={field.label} name={field.name} fullWidth required={field.required} />
+                )}
+                size='small'
+              />
+            );
+          }
+
           if (field.type === 'select') {
             return (
               <FormControl fullWidth key={field.name}>
@@ -167,8 +191,9 @@ export default function GenericForm({ title, fields, endpointPath }) {
                   value={formData[field.name] || ''}
                   onChange={handleChange}
                   name={field.name}
+                  size='small'
                 >
-                  {(selectOptions[field.name] || []).map((option) => (
+                  {(options[field.name] || []).map((option) => (
                     <MenuItem key={option.value} value={option.value}>
                       {option.label}
                     </MenuItem>
@@ -178,14 +203,43 @@ export default function GenericForm({ title, fields, endpointPath }) {
             );
           }
 
-          if (field.type === 'file') {
+          if (field.type === 'date') {
             return (
               <TextField
                 key={field.name}
-                type="file"
+                label={field.label}
                 name={field.name}
-                onChange={(e) => setFormData({ ...formData, [field.name]: e.target.files[0] })}
+                value={formData[field.name] || ''}
+                onChange={handleChange}
+                type="date"
+                InputLabelProps={{ shrink: true }}
                 fullWidth
+                required={field.required}
+              />
+            );
+          }
+
+          if (field.type === 'decimal') {
+            return (
+              <TextField
+                key={field.name}
+                label={field.label}
+                name={field.name}
+                value={formData[field.name] || ''}
+                onChange={(e) => {
+                  const { value } = e.target;
+                  if (/^\d*(,\d{0,2})?$/.test(value)) {
+                    handleChange({
+                      target: {
+                        name: field.name,
+                        value: value.replace(',', '.')
+                      }
+                    });
+                  }
+                }}
+                type="text"
+                fullWidth
+                required={field.required}
               />
             );
           }
@@ -193,14 +247,11 @@ export default function GenericForm({ title, fields, endpointPath }) {
           return null;
         })}
 
-        <Button type="submit" variant="contained" color="primary" disabled={loading}>
+        <Button type="submit" variant="contained" disabled={loading}>
           {loading ? 'Salvando...' : id ? 'Salvar Alterações' : 'Cadastrar'}
         </Button>
-
-        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={handleCloseSnackbar}>
-          <Alert onClose={handleCloseSnackbar} severity={severity} sx={{ width: '100%' }}>
-            {message}
-          </Alert>
+        <Snackbar open={openSnackbar} autoHideDuration={4000} onClose={() => setOpenSnackbar(false)}>
+          <Alert severity={severity}>{message}</Alert>
         </Snackbar>
       </Box>
     </MainCard>

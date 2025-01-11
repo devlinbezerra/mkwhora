@@ -3,7 +3,7 @@
 const config = {
   defaultPath: '/dashboard/default',
   fontFamily: `'Public Sans', sans-serif`,
-  i18n: 'en',
+  i18n: 'pt', // 'en' - English, 'fr' - French, 'ro' - Romanian, 'zh' - Chinese, 'pt' - Portuguese
   miniDrawer: false,
   container: true,
   mode: 'light',

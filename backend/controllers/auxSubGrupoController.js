@@ -12,6 +12,23 @@ module.exports = {
     }
   },
 
+  // Listar subgrupos formatados para campos select
+  async getSelectOptions(req, res) {
+    try {
+      const subgrupos = await AuxSubgrupo.findAll();
+
+      // Formatar os consumidores para o formato esperado no select
+      const options = subgrupos.map((subgrupo) => ({
+        value: subgrupo.subgrupo, // ID usado no backend e enviado no formulário
+        label: subgrupo.subgrupo // Nome exibido no dropdown
+      }));
+
+      res.status(200).json(options);
+    } catch (error) {
+      res.status(500).json({ error: 'Erro ao buscar as opções de consumidores.' });
+    }
+  },
+
   // Buscar subgrupo por ID
   async getById(req, res) {
     try {
