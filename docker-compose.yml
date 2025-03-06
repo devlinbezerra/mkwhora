@@ -1,52 +1,53 @@
+version: '3.8'  # Define a versão do Docker Compose
+
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "4000:3000"         # Porta externa 4000 para o back-end
+      - "4000:3000"         # Porta externa 4000 mapeada para 3000 interna
     volumes:
       - ./backend:/usr/src/app
-      - /usr/src/app/node_modules
+      - /usr/src/app/node_modules  # Evita sobrescrever node_modules
     environment:
       - NODE_ENV=development
-      - DB_USER=${DB_USER}         # Corrigido para corresponder ao .env
-      - DB_PASSWORD=${DB_PASSWORD}
-      - DB_NAME=${DB_NAME}
-      - DB_HOST=database            # Nome correto do serviço Docker
+      - DB_USER=root         # Usuário padrão do MySQL
+      - DB_PASSWORD=cddr2004
+      - DB_NAME=mkwhora
+      - DB_HOST=database     # Nome do serviço do banco
       - DB_PORT=3306
-      - JWT_SECRET=${JWT_SECRET}
-      - PORT=${PORT}                # Porta do servidor Node.js
+      - JWT_SECRET=${JWT_SECRET}  # Carregado do .env
+      - PORT=3000            # Porta interna do backend
     depends_on:
-      - database                   # Aguarda a inicialização do banco
+      - database             # Aguarda o banco de dados estar pronto
 
-  #frontend:
-    #build:
-      #context: ./frontend/mkwfront
-      #dockerfile: Dockerfile
-    #ports:
-      #- "5500:80"  # Porta externa 5000 para acesso
-    #environment:
-      #- CHOKIDAR_USEPOLLING=true  # Hot reload para sistemas de arquivos externos
-      #- NODE_ENV=development
-    #volumes:
-      #- ./frontend/mkwfront:/usr/src/app  # Sincroniza o código local com o contêiner
-      #- /usr/src/app/node_modules  # Evita problemas de cache
-    #stdin_open: true
-    #tty: true
-    #command: ["npm", "start"]
+  frontend:
+    build:
+      context: ./frontend    # Diretório do frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5500:3000"          # Porta externa 5500 mapeada para 3000 interna (padrão do React)
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Para hot reload em sistemas de arquivos externos
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/usr/src/app  # Sincroniza o código local com o contêiner
+      - /usr/src/app/node_modules  # Evita sobrescrever node_modules
+    stdin_open: true             # Necessário para o servidor de desenvolvimento do React
+    tty: true                    # Mantém o contêiner interativo
+    command: ["npm", "start"]    # Inicia o servidor de desenvolvimento
 
   database:
     image: mysql:8.0
     platform: linux/amd64    # Compatível com Mac M1/M2
     ports:
-      - "3333:3306"          # Porta de acesso externo
+      - "3333:3306"          # Porta externa 3333 mapeada para 3306 interna
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}    # Senha para o usuário root
-      - MYSQL_DATABASE=${DB_NAME}             # Nome do banco criado automaticamente
+      - MYSQL_ROOT_PASSWORD=cddr2004  # Senha do root
+      - MYSQL_DATABASE=mkwhora        # Nome do banco de dados
     volumes:
-      - db_data:/var/lib/mysql
-
+      - db_data:/var/lib/mysql        # Volume para persistência dos dados
 
 volumes:
-  db_data:                         # Volume para persistência de dados
+  db_data:                           # Define o volume para persistência do banco

@@ -17,7 +17,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const API_URL = 'http://208.115.246.10:4000/api/account/login';
+  const API_URL = 'http://localhost:4000/api/account/login';
 
   useEffect(() => {
     const token = localStorage.getItem('token');
